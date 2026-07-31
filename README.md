@@ -22,6 +22,14 @@ pnpm dev
 Open the local address printed in the terminal. Drag to orbit, scroll or pinch
 to zoom, and use WASD, arrow keys, or the on-screen direction pad to move.
 
+To make the private development server available to phones on the same network:
+
+```bash
+pnpm dev --hostname 0.0.0.0
+```
+
+Open the network address printed by Next.js on the phone.
+
 ## Publishing
 
 Pushes to `main` automatically build and publish a static copy through GitHub
@@ -32,5 +40,5 @@ Pages. The workflow lives in `.github/workflows/deploy-pages.yml`.
 - `app/` contains the prototype and interface.
 - `public/` contains Candlewick's texture and sharing artwork.
 - `tests/` verifies the rendered page.
-- `build/`, `worker/`, and `.openai/` support the private Sites deployment.
 - `.github/workflows/` publishes the public GitHub Pages copy.
+- `.git/` is the hidden local Git history.
