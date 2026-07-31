@@ -17,6 +17,8 @@ const directionKeys: Record<string, Direction> = {
   d: "right",
 };
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export function CandlewickLab() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef<HTMLSpanElement>(null);
@@ -78,7 +80,9 @@ export function CandlewickLab() {
     actor.position.y = 1.35;
     scene.add(actor);
 
-    const texture = new THREE.TextureLoader().load("/candlewick.png");
+    const texture = new THREE.TextureLoader().load(
+      `${basePath}/candlewick.png`,
+    );
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.NearestFilter;

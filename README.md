@@ -21,3 +21,8 @@ pnpm dev
 
 Open the local address printed in the terminal. Drag to orbit, scroll or pinch
 to zoom, and use WASD, arrow keys, or the on-screen direction pad to move.
+
+## Publishing
+
+Pushes to `main` automatically build and publish a static copy through GitHub
+Pages. The workflow lives in `.github/workflows/deploy-pages.yml`.

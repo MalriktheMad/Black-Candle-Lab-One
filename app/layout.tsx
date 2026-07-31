@@ -1,34 +1,32 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import "./globals.css";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("host") ?? "localhost:3000";
-  const protocol = host.startsWith("localhost") ? "http" : "https";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  "https://candlewick-field-test.vorpalgnome.chatgpt.site/";
 
-  return {
-    metadataBase: new URL(`${protocol}://${host}`),
-    title: "Candlewick Field Test — Black Candle Lab 01",
-    description:
-      "Move Candlewick through a neon 3D lab and orbit the camera on desktop or mobile.",
-    icons: {
-      icon: "/candlewick.png",
-      shortcut: "/candlewick.png",
-    },
-    openGraph: {
-      title: "Candlewick Field Test",
-      description: "Black Candle Lab 01 — a mobile-first 3D movement prototype.",
-      images: [{ url: "/og.png", width: 1672, height: 941 }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "Candlewick Field Test",
-      description: "Black Candle Lab 01 — a mobile-first 3D movement prototype.",
-      images: ["/og.png"],
-    },
-  };
-}
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: "Candlewick Field Test — Black Candle Lab 01",
+  description:
+    "Move Candlewick through a neon 3D lab and orbit the camera on desktop or mobile.",
+  icons: {
+    icon: `${basePath}/candlewick.png`,
+    shortcut: `${basePath}/candlewick.png`,
+  },
+  openGraph: {
+    title: "Candlewick Field Test",
+    description: "Black Candle Lab 01 — a mobile-first 3D movement prototype.",
+    images: [{ url: `${basePath}/og.png`, width: 1672, height: 941 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Candlewick Field Test",
+    description: "Black Candle Lab 01 — a mobile-first 3D movement prototype.",
+    images: [`${basePath}/og.png`],
+  },
+};
 
 export default function RootLayout({
   children,
