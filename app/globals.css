@@ -438,14 +438,15 @@ kbd {
   }
 
   h1 {
-    font-size: clamp(38px, 12vw, 58px);
+    font-size: clamp(36px, 11vw, 50px);
     line-height: 0.86;
   }
 
   h1 span {
-    display: inline;
-    margin-left: 0.18em;
-    font-size: 0.38em;
+    display: block;
+    margin-top: 0.35em;
+    margin-left: 0;
+    font-size: 0.42em;
   }
 
   .intro-copy {

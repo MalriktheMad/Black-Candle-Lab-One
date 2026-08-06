@@ -1,6 +1,6 @@
 # Black Candle Lab One
 
-A small, mobile-first 3D experiment starring Candlewick.
+A small, mobile-first 3D experiment starring Cosmonaut One.
 
 ## What this prototype teaches
 
@@ -38,7 +38,7 @@ Pages. The workflow lives in `.github/workflows/deploy-pages.yml`.
 ## Project map
 
 - `app/` contains the prototype and interface.
-- `public/` contains Candlewick's texture and sharing artwork.
+- `public/` contains the generated cosmonaut model and sharing artwork.
 - `tests/` verifies the rendered page.
 - `.github/workflows/` publishes the public GitHub Pages copy.
 - `.git/` is the hidden local Git history.

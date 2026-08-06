@@ -55,7 +55,7 @@ export function CandlewickLab() {
     renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.domElement.setAttribute(
       "aria-label",
-      "Interactive 3D view of Candlewick",
+      "Interactive 3D view of Cosmonaut One",
     );
     viewport.appendChild(renderer.domElement);
 
@@ -410,7 +410,7 @@ export function CandlewickLab() {
           Prototype online
         </p>
         <h1 id="lab-title">
-          Candlewick
+          Cosmonaut One
           <span>Field Test</span>
         </h1>
         <p className="intro-copy">
@@ -436,7 +436,7 @@ export function CandlewickLab() {
 
       <section className="movement-panel" aria-label="Movement controls">
         <div className="movement-copy">
-          <span>Move Candlewick</span>
+          <span>Move Cosmonaut One</span>
           <small>WASD / ARROW KEYS</small>
         </div>
         <div className="d-pad">
