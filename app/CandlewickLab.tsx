@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 type Direction = "forward" | "back" | "left" | "right";
 
@@ -48,8 +49,10 @@ export function CandlewickLab() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(viewport.clientWidth, viewport.clientHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.35;
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.domElement.setAttribute(
       "aria-label",
       "Interactive 3D view of Candlewick",
@@ -66,19 +69,31 @@ export function CandlewickLab() {
     controls.touches.ONE = THREE.TOUCH.ROTATE;
     controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
 
-    scene.add(new THREE.HemisphereLight("#758bff", "#08030e", 1.6));
+    scene.add(new THREE.HemisphereLight("#e7edff", "#25190f", 2.8));
 
-    const cyanLight = new THREE.PointLight("#00c8ff", 30, 16, 2);
+    const keyLight = new THREE.DirectionalLight("#fff1d2", 5.5);
+    keyLight.position.set(5, 8, 7);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight("#8fb8ff", 2.4);
+    fillLight.position.set(-5, 4, -4);
+    scene.add(fillLight);
+
+    const cyanLight = new THREE.PointLight("#00c8ff", 45, 16, 2);
     cyanLight.position.set(-4, 5, 3);
     scene.add(cyanLight);
 
-    const violetLight = new THREE.PointLight("#8c35ff", 38, 16, 2);
+    const violetLight = new THREE.PointLight("#8c35ff", 48, 16, 2);
     violetLight.position.set(4, 3, -3);
     scene.add(violetLight);
 
     const actor = new THREE.Group();
-    actor.position.y = 1.35;
     scene.add(actor);
+
+    const modelAnchor = new THREE.Group();
+    actor.add(modelAnchor);
 
     const texture = new THREE.TextureLoader().load(
       `${basePath}/candlewick.png`,
@@ -111,7 +126,7 @@ export function CandlewickLab() {
       metalness: 0.15,
     });
 
-    const candlewick = new THREE.Mesh(
+    const loadingPlaceholder = new THREE.Mesh(
       new THREE.BoxGeometry(2.7, 2.7, 2.7),
       [
         cyanMaterial,
@@ -122,9 +137,44 @@ export function CandlewickLab() {
         portraitMaterial,
       ],
     );
-    candlewick.castShadow = true;
-    candlewick.receiveShadow = true;
-    actor.add(candlewick);
+    loadingPlaceholder.position.y = 1.35;
+    loadingPlaceholder.castShadow = true;
+    loadingPlaceholder.receiveShadow = true;
+    modelAnchor.add(loadingPlaceholder);
+
+    let cosmonaut: THREE.Group | null = null;
+    const modelLoader = new GLTFLoader();
+    modelLoader.load(
+      `${basePath}/models/cosmonaut.glb`,
+      (gltf) => {
+        cosmonaut = gltf.scene;
+        cosmonaut.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
+        });
+
+        const sourceBounds = new THREE.Box3().setFromObject(cosmonaut);
+        const sourceSize = sourceBounds.getSize(new THREE.Vector3());
+        if (sourceSize.y > 0) {
+          cosmonaut.scale.setScalar(2.8 / sourceSize.y);
+        }
+
+        cosmonaut.updateMatrixWorld(true);
+        const scaledBounds = new THREE.Box3().setFromObject(cosmonaut);
+        const center = scaledBounds.getCenter(new THREE.Vector3());
+        cosmonaut.position.set(-center.x, -scaledBounds.min.y, -center.z);
+
+        modelAnchor.remove(loadingPlaceholder);
+        loadingPlaceholder.geometry.dispose();
+        modelAnchor.add(cosmonaut);
+      },
+      undefined,
+      (error) => {
+        console.error("Could not load the cosmonaut model", error);
+      },
+    );
 
     const glowMaterial = new THREE.MeshBasicMaterial({
       color: "#7625ff",
@@ -137,7 +187,7 @@ export function CandlewickLab() {
       glowMaterial,
     );
     baseGlow.rotation.x = -Math.PI / 2;
-    baseGlow.position.y = -1.32;
+    baseGlow.position.y = 0.015;
     actor.add(baseGlow);
 
     const floor = new THREE.Mesh(
@@ -206,7 +256,7 @@ export function CandlewickLab() {
     };
 
     const reset = () => {
-      actor.position.set(0, 1.35, 0);
+      actor.position.set(0, 0, 0);
       camera.position.set(7, 5.5, 8);
       controls.target.set(0, 1.25, 0);
       controls.update();
@@ -242,10 +292,13 @@ export function CandlewickLab() {
     window.addEventListener("keyup", onKeyUp);
     window.addEventListener("resize", onResize);
 
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
+    timer.connect(document);
     let animationFrame = 0;
-    const animate = () => {
-      const delta = Math.min(clock.getDelta(), 0.05);
+    const animate = (timestamp?: number) => {
+      timer.update(timestamp);
+      const delta = Math.min(timer.getDelta(), 0.05);
+      const elapsed = timer.getElapsed();
       const speed = 3.3 * delta;
       let x = 0;
       let z = 0;
@@ -255,9 +308,9 @@ export function CandlewickLab() {
       if (pressedRef.current.has("back")) z += speed;
       if (x || z) moveActor(x, z);
 
-      candlewick.position.y = Math.sin(clock.elapsedTime * 1.8) * 0.035;
+      modelAnchor.position.y = Math.sin(elapsed * 1.8) * 0.035;
       glowMaterial.opacity =
-        0.62 + Math.sin(clock.elapsedTime * 2.2) * 0.12;
+        0.62 + Math.sin(elapsed * 2.2) * 0.12;
       controls.update();
       renderer.render(scene, camera);
       animationFrame = window.requestAnimationFrame(animate);
@@ -269,9 +322,22 @@ export function CandlewickLab() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("resize", onResize);
+      timer.dispose();
       controls.dispose();
       renderer.dispose();
       texture.dispose();
+      if (cosmonaut) {
+        cosmonaut.traverse((child) => {
+          if (!(child instanceof THREE.Mesh)) return;
+          child.geometry.dispose();
+          const materials = Array.isArray(child.material)
+            ? child.material
+            : [child.material];
+          materials.forEach((material) => material.dispose());
+        });
+      } else {
+        loadingPlaceholder.geometry.dispose();
+      }
       viewport.removeChild(renderer.domElement);
       resetRef.current = null;
     };

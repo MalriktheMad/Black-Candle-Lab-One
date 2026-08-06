@@ -6,6 +6,7 @@
 /.next/
 /out/
 /coverage/
+*.tsbuildinfo
 
 # local configuration
 .env*
