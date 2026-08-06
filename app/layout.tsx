@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Candlewick Field Test — Black Candle Lab 01",
   description:
-    "Move Candlewick through a neon 3D lab and orbit the camera on desktop or mobile.",
+    "Move Cosmonaut Zero through a neon 3D lab and orbit the camera on desktop or mobile.",
   icons: {
     icon: `${basePath}/candlewick.png`,
     shortcut: `${basePath}/candlewick.png`,
