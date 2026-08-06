@@ -91,14 +91,72 @@ button {
   gap: 11px;
 }
 
-.brand-pixel {
-  width: 11px;
-  height: 11px;
-  background: var(--violet);
-  box-shadow:
-    5px -5px 0 var(--cyan),
-    5px 5px 18px rgba(39, 207, 255, 0.75);
-  transform: rotate(45deg);
+.brand-candlewick {
+  position: relative;
+  width: 38px;
+  height: 36px;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 0 8px rgba(155, 80, 255, 0.72));
+}
+
+.brand-candlewick-frame {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  image-rendering: pixelated;
+  opacity: 0;
+}
+
+.brand-frame-one {
+  animation: candlewick-frame-one 900ms steps(1, end) infinite;
+}
+
+.brand-frame-two {
+  animation: candlewick-frame-two 900ms steps(1, end) infinite;
+}
+
+.brand-frame-three {
+  animation: candlewick-frame-three 900ms steps(1, end) infinite;
+}
+
+@keyframes candlewick-frame-one {
+  0%,
+  32% {
+    opacity: 1;
+  }
+
+  33%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes candlewick-frame-two {
+  0%,
+  32%,
+  66%,
+  100% {
+    opacity: 0;
+  }
+
+  33%,
+  65% {
+    opacity: 1;
+  }
+}
+
+@keyframes candlewick-frame-three {
+  0%,
+  65% {
+    opacity: 0;
+  }
+
+  66%,
+  100% {
+    opacity: 1;
+  }
 }
 
 .lab-number {
@@ -482,6 +540,14 @@ kbd {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .brand-candlewick-frame {
+    animation: none;
+  }
+
+  .brand-frame-one {
+    opacity: 1;
+  }
+
   .scanline {
     display: none;
   }

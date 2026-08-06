@@ -18,13 +18,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Candlewick Field Test",
     description: "Black Candle Lab 01 — a mobile-first 3D movement prototype.",
-    images: [{ url: `${basePath}/og.png`, width: 1672, height: 941 }],
+    images: [
+      {
+        url: `${basePath}/Candlewick/candlewick1.png`,
+        width: 200,
+        height: 190,
+        alt: "Candlewick glowing inside the Black Candle laboratory",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Candlewick Field Test",
     description: "Black Candle Lab 01 — a mobile-first 3D movement prototype.",
-    images: [`${basePath}/og.png`],
+    images: [`${basePath}/Candlewick/candlewick1.png`],
   },
 };
 

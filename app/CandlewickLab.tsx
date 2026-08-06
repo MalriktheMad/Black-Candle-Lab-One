@@ -379,7 +379,26 @@ export function CandlewickLab() {
 
       <header className="lab-header">
         <div className="brand-mark">
-          <span className="brand-pixel" aria-hidden="true" />
+          <span className="brand-candlewick" aria-hidden="true">
+            <span
+              className="brand-candlewick-frame brand-frame-one"
+              style={{
+                backgroundImage: `url("${basePath}/Candlewick/candlewick1.png")`,
+              }}
+            />
+            <span
+              className="brand-candlewick-frame brand-frame-two"
+              style={{
+                backgroundImage: `url("${basePath}/Candlewick/candlewick2.png")`,
+              }}
+            />
+            <span
+              className="brand-candlewick-frame brand-frame-three"
+              style={{
+                backgroundImage: `url("${basePath}/Candlewick/candlewick3.png")`,
+              }}
+            />
+          </span>
           <span>Black Candle</span>
         </div>
         <div className="lab-number">LAB / 01</div>
