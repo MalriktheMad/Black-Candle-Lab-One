@@ -1,5 +1,5 @@
-import { CandlewickLab } from "./CandlewickLab";
+import { CosmonautLab } from "./CosmonautLab";
 
 export default function Home() {
-  return <CandlewickLab />;
+  return <CosmonautLab />;
 }

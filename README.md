@@ -37,7 +37,12 @@ Pages. The workflow lives in `.github/workflows/deploy-pages.yml`.
 
 ## Project map
 
-- `app/` contains the prototype and interface.
+- `app/CosmonautLab.tsx` contains the page interface.
+- `app/components/` contains the touch controls and animated brand.
+- `app/game/config.ts` contains movement speed, camera, and model settings.
+- `app/game/controls.ts` maps keys and calculates movement.
+- `app/game/LabZeroTest.ts` runs input, movement, camera, and rendering.
+- `app/game/world.ts` builds the lights, floor, grid, and cosmonaut model.
 - `public/` contains the generated cosmonaut model and sharing artwork.
 - `tests/` verifies the rendered page.
 - `.github/workflows/` publishes the public GitHub Pages copy.
